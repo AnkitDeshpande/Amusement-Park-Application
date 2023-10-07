@@ -1,5 +1,6 @@
 package com.masai.service;
 
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,34 +17,63 @@ import com.masai.repository.UserRepository;
 public class IAddressService implements AddressService {
 
 	@Autowired
-	private AddressRepository repo;
+	private AddressRepository addressRepository;
 
 	@Autowired
-	private UserRepository urepo;
+	private UserRepository userRepository;
 
 	@Override
-	public Address createAddress(Integer userId, Address address) throws SomethingWentWrongException {
-		// TODO Auto-generated method stub
-		return null;
+	public Address createAddress(Integer userId, Address address) {
+		Optional<User> userOptional = userRepository.findById(userId);
+		if (userOptional.isPresent()) {
+			User user = userOptional.get();
+			address.setUser(user);
+			return addressRepository.save(address);
+		} else {
+			throw new UserNotFoundException("User not found with ID: " + userId);
+		}
 	}
 
 	@Override
-	public Set<Address> getAddressesByUser(Integer userId) throws UserNotFoundException {
-		User user = urepo.findById(userId)
-				.orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
-		return user.getAddresses();
+	public Set<Address> getAddressesByUser(Integer userId) {
+		Optional<User> userOptional = userRepository.findById(userId);
+		if (userOptional.isPresent()) {
+			User user = userOptional.get();
+			return user.getAddresses();
+		} else {
+			throw new UserNotFoundException("User not found with ID: " + userId);
+		}
 	}
 
 	@Override
-	public String updateAddressesByUser(Integer userId) throws UserNotFoundException, SomethingWentWrongException {
-		// TODO Auto-generated method stub
-		return null;
+	public String updateAddressesByUser(Integer userId, Set<Address> addresses) {
+		Optional<User> userOptional = userRepository.findById(userId);
+		if (userOptional.isPresent()) {
+			User user = userOptional.get();
+			addresses.forEach(add -> add.setUser(user));
+			user.setAddresses(addresses);
+			userRepository.save(user);
+			addresses.forEach(add -> addressRepository.save(add));
+
+			return "Addresses updated successfully.";
+		} else {
+			throw new UserNotFoundException("User not found with ID: " + userId);
+		}
 	}
 
 	@Override
-	public Address deleteAddressesByUser(Integer userId) throws UserNotFoundException, SomethingWentWrongException {
-		// TODO Auto-generated method stub
-		return null;
+	public String deleteAddressesByUser(Integer userId, Integer addressId) {
+		Optional<User> userOptional = userRepository.findById(userId);
+		if (userOptional.isPresent()) {
+			User user = userOptional.get();
+			Set<Address> addresses = user.getAddresses();
+			Address addressToDelete = addresses.stream().filter(a -> a.getAddressId().equals(addressId)).findFirst()
+					.orElseThrow(() -> new SomethingWentWrongException("Address not found with ID: " + addressId));
+			addressToDelete.setRemoved(true);
+			userRepository.save(user);
+			return "Address removed successfully.";
+		} else {
+			throw new UserNotFoundException("User not found with ID: " + userId);
+		}
 	}
-
 }

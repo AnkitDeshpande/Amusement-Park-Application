@@ -1,5 +1,7 @@
 package com.masai.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,52 +22,42 @@ import com.masai.service.UserService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("api/users")
+@RequestMapping("/api/users")
 public class UserController {
 
 	@Autowired
 	private UserService userService;
 
 	@GetMapping("/{userId}")
-	public ResponseEntity<User> getUser(@PathVariable Integer userId) {
-		try {
-			User user = userService.getUser(userId);
-			return new ResponseEntity<>(user, HttpStatus.OK);
-		} catch (UserNotFoundException e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+	public ResponseEntity<User> getUser(@PathVariable Integer userId) throws UserNotFoundException {
+		User user = userService.getUser(userId);
+		return new ResponseEntity<>(user, HttpStatus.OK);
+	}
+
+	@GetMapping("/all")
+	public ResponseEntity<List<User>> getAllUsers() {
+		List<User> users = userService.getAllUsers();
+		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
 
 	@PostMapping("/createUser")
-	public ResponseEntity<User> createUser(@RequestBody @Valid User user) {
-		try {
-			System.out.println("Inside create user controller.");
-			User createdUser = userService.createUser(user);
-			return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
-		} catch (SomethingWentWrongException e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+	public ResponseEntity<User> createUser(@RequestBody @Valid User user) throws SomethingWentWrongException {
+		System.out.println("Inside create user controller.");
+		User createdUser = userService.createUser(user);
+		return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
 	}
 
-	@PutMapping
-	public ResponseEntity<String> updateUser(@RequestBody User user) {
-		try {
-			String message = userService.updateUser(user);
-			return new ResponseEntity<>(message, HttpStatus.OK);
-		} catch (UserNotFoundException e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		} catch (SomethingWentWrongException e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+	@PutMapping("/{userId}")
+	public ResponseEntity<String> updateUser(@RequestBody User user, @PathVariable Integer userId)
+			throws UserNotFoundException, SomethingWentWrongException {
+		user.setUserId(userId);
+		String message = userService.updateUser(user);
+		return new ResponseEntity<>(message, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{userId}")
-	public ResponseEntity<String> deleteUser(@PathVariable Integer userId) {
-		try {
-			String message = userService.deleteUser(userId);
-			return new ResponseEntity<>(message, HttpStatus.OK);
-		} catch (UserNotFoundException e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+	public ResponseEntity<String> deleteUser(@PathVariable Integer userId) throws UserNotFoundException {
+		String message = userService.deleteUser(userId);
+		return new ResponseEntity<>(message, HttpStatus.OK);
 	}
 }

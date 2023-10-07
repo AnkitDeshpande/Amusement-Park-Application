@@ -14,13 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.masai.exception.SomethingWentWrongException;
-import com.masai.exception.UserNotFoundException;
 import com.masai.model.Address;
 import com.masai.service.AddressService;
 
 @RestController
-@RequestMapping("/addresses")
+@RequestMapping("/api/addresses")
 public class AddressController {
 
 	@Autowired
@@ -28,47 +26,26 @@ public class AddressController {
 
 	@PostMapping("/users/{userId}")
 	public ResponseEntity<Address> createAddress(@PathVariable Integer userId, @RequestBody Address address) {
-		try {
-			Address createdAddress = addressService.createAddress(userId, address);
-			return new ResponseEntity<>(createdAddress, HttpStatus.CREATED);
-		} catch (SomethingWentWrongException e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		Address createdAddress = addressService.createAddress(userId, address);
+		return new ResponseEntity<>(createdAddress, HttpStatus.CREATED);
 	}
 
 	@GetMapping("/users/{userId}")
 	public ResponseEntity<Set<Address>> getAddressesByUser(@PathVariable Integer userId) {
-		try {
-			Set<Address> address = addressService.getAddressesByUser(userId);
-			return new ResponseEntity<>(address, HttpStatus.OK);
-		} catch (UserNotFoundException e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		} catch (SomethingWentWrongException e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		Set<Address> address = addressService.getAddressesByUser(userId);
+		return new ResponseEntity<>(address, HttpStatus.OK);
 	}
 
-	@PutMapping("/users/{userId}")
-	public ResponseEntity<String> updateAddressesByUser(@PathVariable Integer userId) {
-		try {
-			String message = addressService.updateAddressesByUser(userId);
-			return new ResponseEntity<>(message, HttpStatus.OK);
-		} catch (UserNotFoundException e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		} catch (SomethingWentWrongException e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+	@PutMapping("/users/{userId}/update-addresses")
+	public ResponseEntity<String> updateAddressesByUser(@PathVariable Integer userId,
+			@RequestBody Set<Address> addresses) {
+		String message = addressService.updateAddressesByUser(userId, addresses);
+		return new ResponseEntity<>(message, HttpStatus.OK);
 	}
 
-	@DeleteMapping("/users/{userId}")
-	public ResponseEntity<Address> deleteAddressesByUser(@PathVariable Integer userId) {
-		try {
-			Address deletedAddress = addressService.deleteAddressesByUser(userId);
-			return new ResponseEntity<>(deletedAddress, HttpStatus.OK);
-		} catch (UserNotFoundException e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		} catch (SomethingWentWrongException e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+	@DeleteMapping("/users/{userId}/delete-addresses/{addressId}")
+	public ResponseEntity<String> deleteAddressesByUser(@PathVariable Integer userId, @PathVariable Integer addressId) {
+		String deletedAddress = addressService.deleteAddressesByUser(userId, addressId);
+		return new ResponseEntity<>(deletedAddress, HttpStatus.OK);
 	}
 }

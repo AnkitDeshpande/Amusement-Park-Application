@@ -62,11 +62,11 @@ public class User {
 
 	private boolean isDeleted = false;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<Address> addresses = new HashSet<Address>();
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<Review> reviews = new HashSet<>();
 
 }

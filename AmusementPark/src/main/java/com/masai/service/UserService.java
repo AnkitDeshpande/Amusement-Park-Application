@@ -1,5 +1,7 @@
 package com.masai.service;
 
+import java.util.List;
+
 import com.masai.exception.SomethingWentWrongException;
 import com.masai.exception.UserNotFoundException;
 import com.masai.model.User;
@@ -13,5 +15,7 @@ public interface UserService {
 	public String updateUser(User user) throws UserNotFoundException, SomethingWentWrongException;
 
 	public String deleteUser(Integer userId) throws UserNotFoundException;
+
+	public List<User> getAllUsers() throws SomethingWentWrongException;
 
 }

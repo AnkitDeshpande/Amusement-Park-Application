@@ -3,6 +3,7 @@ package com.masai.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,19 +32,21 @@ public class Review {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@ManyToOne
+	@JsonIgnore
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "park_id")
 	private Park park;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "activity_id")
 	private Activity activity;
 
-	@NotBlank(message = "Rating is required.")
+	@NotNull(message = "Rating is required.")
 	@Min(value = 1, message = "Rating must be between 1 and 5 stars.")
 	@Max(value = 5, message = "Rating must be between 1 and 5 stars.")
 	private Integer rating;

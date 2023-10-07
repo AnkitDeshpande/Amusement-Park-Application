@@ -11,8 +11,10 @@ public interface AddressService {
 
 	public Set<Address> getAddressesByUser(Integer userId) throws UserNotFoundException, SomethingWentWrongException;
 
-	public String updateAddressesByUser(Integer userId) throws UserNotFoundException, SomethingWentWrongException;
+	public String updateAddressesByUser(Integer userId, Set<Address> addresses)
+			throws UserNotFoundException, SomethingWentWrongException;
 
-	public Address deleteAddressesByUser(Integer userId) throws UserNotFoundException, SomethingWentWrongException;
+	public String deleteAddressesByUser(Integer userId, Integer addressId)
+			throws UserNotFoundException, SomethingWentWrongException;
 
 }

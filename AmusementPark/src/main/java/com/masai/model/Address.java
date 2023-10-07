@@ -38,6 +38,8 @@ public class Address {
 	@Pattern(regexp = "\\d{6}", message = "Pincode must be a 6-digit number.")
 	private String pincode;
 
+	private boolean isRemoved = false;
+
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "user_id")

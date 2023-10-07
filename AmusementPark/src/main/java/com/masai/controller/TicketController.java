@@ -21,48 +21,30 @@ import com.masai.service.TicketService;
 @RequestMapping("/tickets")
 public class TicketController {
 
-	@Autowired
-	private TicketService ticketService;
+    @Autowired
+    private TicketService ticketService;
 
-	@GetMapping("/{ticketId}")
-	public ResponseEntity<Ticket> getTicket(@PathVariable Integer ticketId) {
-		try {
-			Ticket ticket = ticketService.getTicket(ticketId);
-			return new ResponseEntity<>(ticket, HttpStatus.OK);
-		} catch (TicketNotFoundException e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-	}
+    @GetMapping("/{ticketId}")
+    public ResponseEntity<Ticket> getTicket(@PathVariable Integer ticketId) throws TicketNotFoundException {
+        Ticket ticket = ticketService.getTicket(ticketId);
+        return new ResponseEntity<>(ticket, HttpStatus.OK);
+    }
 
-	@PostMapping
-	public ResponseEntity<Ticket> createTicket(@RequestBody Ticket ticket) {
-		try {
-			Ticket createdTicket = ticketService.createTicket(ticket);
-			return new ResponseEntity<>(createdTicket, HttpStatus.CREATED);
-		} catch (SomethingWentWrongException e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
+    @PostMapping
+    public ResponseEntity<Ticket> createTicket(@RequestBody Ticket ticket) throws SomethingWentWrongException {
+        Ticket createdTicket = ticketService.createTicket(ticket);
+        return new ResponseEntity<>(createdTicket, HttpStatus.CREATED);
+    }
 
-	@PutMapping
-	public ResponseEntity<String> updateTicket(@RequestBody Ticket ticket) {
-		try {
-			String message = ticketService.updateTicket(ticket);
-			return new ResponseEntity<>(message, HttpStatus.OK);
-		} catch (TicketNotFoundException e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		} catch (SomethingWentWrongException e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
+    @PutMapping
+    public ResponseEntity<String> updateTicket(@RequestBody Ticket ticket) throws TicketNotFoundException, SomethingWentWrongException {
+        String message = ticketService.updateTicket(ticket);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 
-	@DeleteMapping("/{ticketId}")
-	public ResponseEntity<String> deleteTicket(@PathVariable Integer ticketId) {
-		try {
-			String message = ticketService.deleteTicket(ticketId);
-			return new ResponseEntity<>(message, HttpStatus.OK);
-		} catch (TicketNotFoundException e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-	}
+    @DeleteMapping("/{ticketId}")
+    public ResponseEntity<String> deleteTicket(@PathVariable Integer ticketId) throws TicketNotFoundException {
+        String message = ticketService.deleteTicket(ticketId);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 }

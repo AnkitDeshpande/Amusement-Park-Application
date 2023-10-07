@@ -44,6 +44,7 @@ public class Activity {
 
 	private boolean isDeleted = false;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "activity", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Review> reviews = new HashSet<Review>();
 

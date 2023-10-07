@@ -1,5 +1,7 @@
 package com.masai.controller;
 
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,51 +20,36 @@ import com.masai.model.Activity;
 import com.masai.service.ActivityService;
 
 @RestController
-@RequestMapping("/activities")
+@RequestMapping("/api/activities")
 public class ActivityController {
 
 	@Autowired
 	private ActivityService activityService;
 
-	@GetMapping("/{activityId}")
-	public ResponseEntity<Activity> getActivity(@PathVariable Integer activityId) {
-		try {
-			Activity activity = activityService.getActivity(activityId);
-			return new ResponseEntity<>(activity, HttpStatus.OK);
-		} catch (ActivityNotFoundException e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+	@GetMapping("/{parkId}")
+	public ResponseEntity<Set<Activity>> getActivity(@PathVariable Integer parkId) throws ActivityNotFoundException {
+		Set<Activity> activity = activityService.getActivity(parkId);
+		return new ResponseEntity<>(activity, HttpStatus.OK);
 	}
 
-	@PostMapping
-	public ResponseEntity<Activity> createActivity(@RequestBody Activity activity) {
-		try {
-			Activity createdActivity = activityService.createActivity(activity.getPark().getParkId(), activity);
-			return new ResponseEntity<>(createdActivity, HttpStatus.CREATED);
-		} catch (SomethingWentWrongException e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+	@PostMapping("/park/{parkId}")
+	public ResponseEntity<Activity> createActivity(@RequestBody Activity activity, @PathVariable Integer parkId)
+			throws SomethingWentWrongException {
+		Activity createdActivity = activityService.createActivity(parkId, activity);
+		return new ResponseEntity<>(createdActivity, HttpStatus.CREATED);
 	}
 
 	@PutMapping
-	public ResponseEntity<String> updateActivity(@RequestBody Activity activity) {
-		try {
-			String message = activityService.updateActivity(activity);
-			return new ResponseEntity<>(message, HttpStatus.OK);
-		} catch (ActivityNotFoundException e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		} catch (SomethingWentWrongException e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+	public ResponseEntity<String> updateActivity(@RequestBody Activity activity)
+			throws ActivityNotFoundException, SomethingWentWrongException {
+		String message = activityService.updateActivity(activity);
+		return new ResponseEntity<>(message, HttpStatus.OK);
 	}
 
-	@DeleteMapping("/{activityId}")
-	public ResponseEntity<String> deleteActivity(@PathVariable Integer activityId) {
-		try {
-			String message = activityService.deleteActivity(activityId);
-			return new ResponseEntity<>(message, HttpStatus.OK);
-		} catch (ActivityNotFoundException e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+	@DeleteMapping("/park/{parkId}/activity/{activityId}")
+	public ResponseEntity<String> deleteActivity(@PathVariable Integer activityId, @PathVariable Integer parkId)
+			throws ActivityNotFoundException {
+		String message = activityService.deleteActivity(activityId, parkId);
+		return new ResponseEntity<>(message, HttpStatus.OK);
 	}
 }

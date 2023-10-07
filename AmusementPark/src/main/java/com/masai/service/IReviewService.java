@@ -16,26 +16,48 @@ public class IReviewService implements ReviewService {
 
 	@Override
 	public Review getReview(Integer reviewId) throws ReviewNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+		return repo.findById(reviewId)
+				.orElseThrow(() -> new ReviewNotFoundException("Couldn't find review with id: " + reviewId));
 	}
 
 	@Override
 	public Review createReview(Review review) throws SomethingWentWrongException {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			return repo.save(review);
+		} catch (Exception e) {
+			throw new SomethingWentWrongException();
+		}
 	}
 
 	@Override
 	public String updateReview(Review review) throws ReviewNotFoundException, SomethingWentWrongException {
-		// TODO Auto-generated method stub
-		return null;
+		Review existingReview = repo.findById(review.getId())
+				.orElseThrow(() -> new ReviewNotFoundException("Couldn't find review with id: " + review.getId()));
+		try {
+			// Update review properties here
+			existingReview.setUser(review.getUser());
+			existingReview.setPark(review.getPark());
+			existingReview.setActivity(review.getActivity());
+			existingReview.setRating(review.getRating());
+			existingReview.setComment(review.getComment());
+
+			// Save the updated review
+			repo.save(existingReview);
+			return "Review updated successfully.";
+		} catch (Exception e) {
+			throw new SomethingWentWrongException();
+		}
 	}
 
 	@Override
 	public String deleteReview(Integer reviewId) throws ReviewNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		Review review = repo.findById(reviewId)
+				.orElseThrow(() -> new ReviewNotFoundException("Couldn't find review with id: " + reviewId));
 
+		// Instead of deleting the review, mark it as deleted
+		review.setDeleted(true);
+		repo.save(review);
+
+		return "Review deleted successfully.";
+	}
 }

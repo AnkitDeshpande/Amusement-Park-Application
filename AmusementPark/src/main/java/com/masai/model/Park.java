@@ -49,14 +49,15 @@ public class Park {
 
 	private boolean isDeleted = false;
 
-	@OneToMany(mappedBy = "park", cascade = CascadeType.ALL, orphanRemoval = true)
+//	@JsonIgnore
+	@OneToMany(mappedBy = "park", cascade = CascadeType.ALL)
 	private Set<Review> reviews = new HashSet<Review>();
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "park", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "park", cascade = CascadeType.ALL)
 	private Set<Ticket> tickets = new HashSet<Ticket>();
 
-	@OneToMany(mappedBy = "park", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "park", cascade = CascadeType.ALL)
 	private Set<Activity> activities = new HashSet<Activity>();
 
 }

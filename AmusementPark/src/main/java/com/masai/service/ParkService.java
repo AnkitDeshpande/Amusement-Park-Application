@@ -8,13 +8,13 @@ import com.masai.model.Park;
 
 public interface ParkService {
 
-    Park getPark(Integer parkId) throws ParkNotFoundException, SomethingWentWrongException;
+	Park getPark(Integer parkId) throws ParkNotFoundException, SomethingWentWrongException;
 
-    List<Park> getAllParks() throws SomethingWentWrongException;
+	List<Park> getAllParks() throws SomethingWentWrongException;
 
-    Park createPark(Park park) throws SomethingWentWrongException;
+	Park createPark(Park park) throws SomethingWentWrongException;
 
-    String updatePark(Park park) throws ParkNotFoundException, SomethingWentWrongException;
+	String updatePark(Park park) throws ParkNotFoundException, SomethingWentWrongException;
 
-    String deletePark(Long parkId) throws ParkNotFoundException, SomethingWentWrongException;
+	String deletePark(Integer parkId) throws ParkNotFoundException, SomethingWentWrongException;
 }

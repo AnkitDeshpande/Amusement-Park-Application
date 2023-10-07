@@ -25,47 +25,26 @@ public class ReviewController {
     private ReviewService reviewService;
 
     @GetMapping("/{reviewId}")
-    public ResponseEntity<Review> getReview(@PathVariable Integer reviewId) {
-        try {
-            Review review = reviewService.getReview(reviewId);
-            return new ResponseEntity<>(review, HttpStatus.OK);
-        } catch (ReviewNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Review> getReview(@PathVariable Integer reviewId) throws ReviewNotFoundException {
+        Review review = reviewService.getReview(reviewId);
+        return new ResponseEntity<>(review, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Review> createReview(@RequestBody Review review) {
-        try {
-            Review createdReview = reviewService.createReview(review);
-            return new ResponseEntity<>(createdReview, HttpStatus.CREATED);
-        } catch (SomethingWentWrongException e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<Review> createReview(@RequestBody Review review) throws SomethingWentWrongException {
+        Review createdReview = reviewService.createReview(review);
+        return new ResponseEntity<>(createdReview, HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<String> updateReview(@RequestBody Review review) {
-        try {
-            String message = reviewService.updateReview(review);
-            return new ResponseEntity<>(message, HttpStatus.OK);
-        } catch (ReviewNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (SomethingWentWrongException e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<String> updateReview(@RequestBody Review review) throws ReviewNotFoundException, SomethingWentWrongException {
+        String message = reviewService.updateReview(review);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @DeleteMapping("/{reviewId}")
-    public ResponseEntity<String> deleteReview(@PathVariable Integer reviewId) {
-        try {
-            String message = reviewService.deleteReview(reviewId);
-            return new ResponseEntity<>(message, HttpStatus.OK);
-        } catch (ReviewNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<String> deleteReview(@PathVariable Integer reviewId) throws ReviewNotFoundException {
+        String message = reviewService.deleteReview(reviewId);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }
-
-
-

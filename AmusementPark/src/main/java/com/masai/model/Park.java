@@ -49,7 +49,7 @@ public class Park {
 
 	private boolean isDeleted = false;
 
-//	@JsonIgnore
+	/**@JsonIgnore*/
 	@OneToMany(mappedBy = "park", cascade = CascadeType.ALL)
 	private Set<Review> reviews = new HashSet<Review>();
 

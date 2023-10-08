@@ -42,10 +42,6 @@ public class Review {
 	@JoinColumn(name = "park_id")
 	private Park park;
 
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "activity_id")
-	private Activity activity;
-
 	@NotNull(message = "Rating is required.")
 	@Min(value = 1, message = "Rating must be between 1 and 5 stars.")
 	@Max(value = 5, message = "Rating must be between 1 and 5 stars.")

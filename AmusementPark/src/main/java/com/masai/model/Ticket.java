@@ -2,19 +2,17 @@ package com.masai.model;
 
 import java.util.Date;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import jakarta.validation.constraints.DecimalMin;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -39,16 +37,11 @@ public class Ticket {
 	private Park park;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date purchaseDate;
+	private Date purchaseDate = new Date();;
 
-	@DecimalMin(value = "0.0", message = "Ticket price must be a non-negative value.")
-	private double price;
+	@Column(name = "Entry_Fee")
+	private double entryfee = 100.00;
 
 	private boolean isCancelled = false;
-
-	@PrePersist
-	protected void onCreate() {
-		purchaseDate = new Date(); // Set the purchaseDate to the current timestamp when the entity is created
-	}
 
 }

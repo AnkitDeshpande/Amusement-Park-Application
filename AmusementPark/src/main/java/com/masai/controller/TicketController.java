@@ -1,5 +1,7 @@
 package com.masai.controller;
 
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,33 +20,36 @@ import com.masai.model.Ticket;
 import com.masai.service.TicketService;
 
 @RestController
-@RequestMapping("/tickets")
+@RequestMapping("/api/user/{userId}/tickets")
 public class TicketController {
 
-    @Autowired
-    private TicketService ticketService;
+	@Autowired
+	private TicketService ticketService;
 
-    @GetMapping("/{ticketId}")
-    public ResponseEntity<Ticket> getTicket(@PathVariable Integer ticketId) throws TicketNotFoundException {
-        Ticket ticket = ticketService.getTicket(ticketId);
-        return new ResponseEntity<>(ticket, HttpStatus.OK);
-    }
+	@GetMapping("/{ticketId}")
+	public ResponseEntity<Ticket> getTicket(@PathVariable Integer userId, @PathVariable Integer ticketId)
+			throws TicketNotFoundException {
+		Ticket tickets = ticketService.getTicket(userId, ticketId);
+		return new ResponseEntity<>(tickets, HttpStatus.OK);
+	}
 
-    @PostMapping
-    public ResponseEntity<Ticket> createTicket(@RequestBody Ticket ticket) throws SomethingWentWrongException {
-        Ticket createdTicket = ticketService.createTicket(ticket);
-        return new ResponseEntity<>(createdTicket, HttpStatus.CREATED);
-    }
+	@GetMapping
+	public ResponseEntity<Set<Ticket>> getTickets(@PathVariable Integer userId) throws TicketNotFoundException {
+		Set<Ticket> tickets = ticketService.getTickets(userId);
+		return new ResponseEntity<>(tickets, HttpStatus.OK);
+	}
 
-    @PutMapping
-    public ResponseEntity<String> updateTicket(@RequestBody Ticket ticket) throws TicketNotFoundException, SomethingWentWrongException {
-        String message = ticketService.updateTicket(ticket);
-        return new ResponseEntity<>(message, HttpStatus.OK);
-    }
+	@PostMapping
+	public ResponseEntity<Ticket> createTicket(@PathVariable Integer userId, Integer parkId, @RequestBody Ticket ticket)
+			throws SomethingWentWrongException {
+		Ticket createdTicket = ticketService.createTicket(userId, parkId, ticket);
+		return new ResponseEntity<>(createdTicket, HttpStatus.CREATED);
+	}
 
-    @DeleteMapping("/{ticketId}")
-    public ResponseEntity<String> deleteTicket(@PathVariable Integer ticketId) throws TicketNotFoundException {
-        String message = ticketService.deleteTicket(ticketId);
-        return new ResponseEntity<>(message, HttpStatus.OK);
-    }
+	@DeleteMapping("/{ticketId}")
+	public ResponseEntity<String> deleteTicket(@PathVariable Integer userId, @PathVariable Integer ticketId)
+			throws TicketNotFoundException {
+		String message = ticketService.deleteTicket(userId, ticketId);
+		return new ResponseEntity<>(message, HttpStatus.OK);
+	}
 }

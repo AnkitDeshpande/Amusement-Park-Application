@@ -1,6 +1,7 @@
 package com.masai.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,5 +95,13 @@ public class IUserService implements UserService {
 	@Override
 	public List<User> getAllUsers() throws SomethingWentWrongException {
 		return repo.findAll();
+	}
+
+	@Override
+	public User findByEmail(String email) throws UserNotFoundException {
+		Optional<User> user = repo.findByEmail(email);
+		if (user.isEmpty())
+			throw new UserNotFoundException("No user found");
+		return user.get();
 	}
 }

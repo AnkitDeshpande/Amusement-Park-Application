@@ -18,4 +18,6 @@ public interface UserService {
 
 	public List<User> getAllUsers() throws SomethingWentWrongException;
 
+	public User findByEmail(String name) throws UserNotFoundException;
+
 }

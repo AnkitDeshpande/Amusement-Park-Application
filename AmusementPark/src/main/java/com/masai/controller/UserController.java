@@ -40,12 +40,20 @@ public class UserController {
 		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
 
-	@PostMapping("/createUser")
+	@PostMapping("/register")
 	public ResponseEntity<User> createUser(@RequestBody @Valid User user) throws SomethingWentWrongException {
 		System.out.println("Inside create user controller.");
 		User createdUser = userService.createUser(user);
 		return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
 	}
+
+	/*
+	 * @GetMapping("/signin") public ResponseEntity<User>
+	 * logInUserHandler(Authentication auth) throws UserNotFoundException { User
+	 * custo = userService.findByEmail(auth.getName());
+	 * 
+	 * return new ResponseEntity<>(custo, HttpStatus.ACCEPTED); }
+	 */
 
 	@PutMapping("/{userId}")
 	public ResponseEntity<String> updateUser(@RequestBody User user, @PathVariable Integer userId)

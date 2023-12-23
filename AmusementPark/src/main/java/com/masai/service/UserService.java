@@ -3,6 +3,8 @@ package com.masai.service;
 import com.masai.exception.SomethingWentWrongException;
 import com.masai.exception.UserNotFoundException;
 import com.masai.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -64,4 +66,22 @@ public interface UserService {
      * @throws UserNotFoundException If the user with the specified email is not found.
      */
     User findByEmail(String email) throws UserNotFoundException;
+
+    /**
+     * Creates a new Admin user.
+     *
+     * @param user User object containing details of the user to be created.
+     * @return The created User object.
+     * @throws SomethingWentWrongException If an unexpected issue occurs during user creation.
+     */
+    User createAdmin(User user) throws SomethingWentWrongException;
+
+    /**
+     * Retrieves a page of users based on the provided pagination criteria.
+     *
+     * @param pageable Pagination information such as page number, size, sorting, etc.
+     * @return A Page object containing the users based on the pagination criteria.
+     * @throws SomethingWentWrongException If an error occurs while fetching the users.
+     */
+    Page<User> getAllUsers(Pageable pageable) throws SomethingWentWrongException;
 }

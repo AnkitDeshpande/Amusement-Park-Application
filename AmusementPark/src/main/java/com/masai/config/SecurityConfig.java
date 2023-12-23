@@ -45,7 +45,8 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable) // Disabling CSRF protection
                 .cors(AbstractHttpConfigurer::disable) // Disabling Cross-Origin Resource Sharing
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login", "/api/users/register", "/api/activities/{parkId}", "/api/parks/{parkId}", "/api/reviews/park/{parkId}")
+                        //.anyRequest().permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/**", "/swagger-resources/**", "/webjars/**", "/auth/login", "/api/users/register", "/api/activities/{parkId}", "/api/parks/{parkId}", "/api/reviews/park/{parkId}")
                         .permitAll() // Allowing access to specified endpoints without authentication
                         .anyRequest().authenticated() // Requiring authentication for any other requests
                 )

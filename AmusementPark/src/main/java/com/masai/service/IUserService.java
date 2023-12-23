@@ -7,6 +7,8 @@ import com.masai.model.User;
 import com.masai.repository.AddressRepository;
 import com.masai.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,6 +30,7 @@ public class IUserService implements UserService, UserDetailsService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Override
     public User getUser(Integer userId) throws UserNotFoundException {
         // Try to find the user by ID
@@ -109,6 +112,45 @@ public class IUserService implements UserService, UserDetailsService {
         if (user.isEmpty())
             throw new UserNotFoundException("No user found");
         return user.get();
+    }
+
+    /**
+     * Creates a new Admin user.
+     *
+     * @param user User object containing details of the user to be created.
+     * @return The created User object.
+     * @throws SomethingWentWrongException If an unexpected issue occurs during user creation.
+     */
+    @Override
+    public User createAdmin(User user) throws SomethingWentWrongException {
+        try {
+            // Save the user first to generate a user_id
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            User savedUser = repo.save(user);
+
+            // Update the addresses with the saved user reference
+            Set<Address> addresses = user.getAddresses();
+            for (Address address : addresses) {
+                address.setUser(savedUser); // Set the user reference
+                addressRepository.save(address); // Save the address
+            }
+
+            return savedUser;
+        } catch (Exception e) {
+            throw new SomethingWentWrongException();
+        }
+    }
+
+    /**
+     * Retrieves a page of users based on the provided pagination criteria.
+     *
+     * @param pageable Pagination information such as page number, size, sorting, etc.
+     * @return A Page object containing the users based on the pagination criteria.
+     * @throws SomethingWentWrongException If an error occurs while fetching the users.
+     */
+    @Override
+    public Page<User> getAllUsers(Pageable pageable) throws SomethingWentWrongException {
+        return repo.findAll(pageable);
     }
 
     /**

@@ -4,7 +4,10 @@ import com.masai.exception.SomethingWentWrongException;
 import com.masai.exception.TicketNotFoundException;
 import com.masai.exception.UserNotFoundException;
 import com.masai.model.Ticket;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -70,4 +73,50 @@ public interface TicketService {
      * @throws UserNotFoundException   If the specified user is not found.
      */
     String deleteTicket(Integer userId, Integer ticketId) throws TicketNotFoundException, UserNotFoundException;
+
+    /**
+     * Retrieves paginated tickets for a specific user.
+     *
+     * @param userId   ID of the user for whom tickets are requested.
+     * @param pageable Pageable object containing pagination and sorting information.
+     * @return Page object containing a set of tickets associated with the specified user.
+     * @throws TicketNotFoundException If no tickets are found for the specified user.
+     * @throws UserNotFoundException   If the specified user is not found.
+     */
+    Page<Ticket> getTickets(Integer userId, Pageable pageable)
+            throws TicketNotFoundException, UserNotFoundException;
+
+    /**
+     * Retrieves paginated and sorted tickets for a specific user in ascending order.
+     *
+     * @param userId   ID of the user for whom tickets are requested.
+     * @param pageable Pageable object containing pagination and sorting information.
+     * @return Page object containing a set of tickets associated with the specified user sorted in ascending order.
+     * @throws TicketNotFoundException If no tickets are found for the specified user.
+     * @throws UserNotFoundException   If the specified user is not found.
+     */
+    Page<Ticket> getTicketsSortedAsc(Integer userId, Pageable pageable)
+            throws TicketNotFoundException, UserNotFoundException;
+
+    /**
+     * Retrieves paginated and sorted tickets for a specific user in descending order.
+     *
+     * @param userId   ID of the user for whom tickets are requested.
+     * @param pageable Pageable object containing pagination and sorting information.
+     * @return Page object containing a set of tickets associated with the specified user sorted in descending order.
+     * @throws TicketNotFoundException If no tickets are found for the specified user.
+     * @throws UserNotFoundException   If the specified user is not found.
+     */
+    Page<Ticket> getTicketsSortedDesc(Integer userId, Pageable pageable)
+            throws TicketNotFoundException, UserNotFoundException;
+
+    /**
+     * Adds a list of tickets in bulk.
+     *
+     * @param tickets List of Ticket objects to be added in bulk.
+     * @return List of added Ticket objects.
+     * @throws SomethingWentWrongException If an unexpected issue occurs during bulk ticket addition.
+     * @throws UserNotFoundException       If the specified user is not found.
+     */
+    List<Ticket> addTicketsInBulk(List<Ticket> tickets) throws SomethingWentWrongException, UserNotFoundException;
 }

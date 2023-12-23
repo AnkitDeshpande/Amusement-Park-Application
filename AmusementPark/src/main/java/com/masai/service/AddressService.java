@@ -3,7 +3,10 @@ package com.masai.service;
 import com.masai.exception.SomethingWentWrongException;
 import com.masai.exception.UserNotFoundException;
 import com.masai.model.Address;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -54,4 +57,49 @@ public interface AddressService {
      */
     String deleteAddressesByUser(Integer userId, Integer addressId)
             throws UserNotFoundException, SomethingWentWrongException;
+
+    /**
+     * Retrieves a paginated list of addresses associated with a specific user.
+     *
+     * @param userId   ID of the user for which addresses are requested.
+     * @param pageable Pageable object containing pagination and sorting information.
+     * @return Page object containing a list of addresses associated with the user.
+     * @throws UserNotFoundException       If the specified user is not found.
+     * @throws SomethingWentWrongException If an unexpected issue occurs while retrieving addresses.
+     */
+    Page<Address> getAddressesByUser(Integer userId, Pageable pageable)
+            throws UserNotFoundException, SomethingWentWrongException;
+
+    /**
+     * Retrieves a paginated and sorted list of addresses associated with a specific user in ascending order.
+     *
+     * @param userId   ID of the user for which addresses are requested.
+     * @param pageable Pageable object containing pagination and sorting information.
+     * @return Page object containing a list of addresses associated with the user sorted in ascending order.
+     * @throws UserNotFoundException       If the specified user is not found.
+     * @throws SomethingWentWrongException If an unexpected issue occurs while retrieving addresses.
+     */
+    Page<Address> getAddressesByUserSortedAsc(Integer userId, Pageable pageable)
+            throws UserNotFoundException, SomethingWentWrongException;
+
+    /**
+     * Retrieves a paginated and sorted list of addresses associated with a specific user in descending order.
+     *
+     * @param userId   ID of the user for which addresses are requested.
+     * @param pageable Pageable object containing pagination and sorting information.
+     * @return Page object containing a list of addresses associated with the user sorted in descending order.
+     * @throws UserNotFoundException       If the specified user is not found.
+     * @throws SomethingWentWrongException If an unexpected issue occurs while retrieving addresses.
+     */
+    Page<Address> getAddressesByUserSortedDesc(Integer userId, Pageable pageable)
+            throws UserNotFoundException, SomethingWentWrongException;
+
+    /**
+     * Adds a list of addresses in bulk.
+     *
+     * @param addresses List of Address objects to be added in bulk.
+     * @return List of added Address objects.
+     * @throws SomethingWentWrongException If an unexpected issue occurs during bulk address addition.
+     */
+    List<Address> addAddressesInBulk(List<Address> addresses) throws SomethingWentWrongException;
 }

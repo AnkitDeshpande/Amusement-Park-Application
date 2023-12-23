@@ -3,7 +3,10 @@ package com.masai.service;
 import com.masai.exception.ReviewNotFoundException;
 import com.masai.exception.SomethingWentWrongException;
 import com.masai.model.Review;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -54,4 +57,43 @@ public interface ReviewService {
      * @throws ReviewNotFoundException If the specified review is not found.
      */
     String deleteReview(Integer parkId, Integer userId, Integer reviewId) throws ReviewNotFoundException;
+
+    /**
+     * Retrieves paginated reviews for a specific park.
+     *
+     * @param parkId   ID of the park for which reviews are requested.
+     * @param pageable Pageable object containing pagination and sorting information.
+     * @return Page object containing a set of reviews associated with the specified park.
+     * @throws ReviewNotFoundException If no reviews are found for the specified park.
+     */
+    Page<Review> getReview(Integer parkId, Pageable pageable) throws ReviewNotFoundException;
+
+    /**
+     * Retrieves paginated and sorted reviews for a specific park in ascending order.
+     *
+     * @param parkId   ID of the park for which reviews are requested.
+     * @param pageable Pageable object containing pagination and sorting information.
+     * @return Page object containing a set of reviews associated with the specified park sorted in ascending order.
+     * @throws ReviewNotFoundException If no reviews are found for the specified park.
+     */
+    Page<Review> getReviewSortedAsc(Integer parkId, Pageable pageable) throws ReviewNotFoundException;
+
+    /**
+     * Retrieves paginated and sorted reviews for a specific park in descending order.
+     *
+     * @param parkId   ID of the park for which reviews are requested.
+     * @param pageable Pageable object containing pagination and sorting information.
+     * @return Page object containing a set of reviews associated with the specified park sorted in descending order.
+     * @throws ReviewNotFoundException If no reviews are found for the specified park.
+     */
+    Page<Review> getReviewSortedDesc(Integer parkId, Pageable pageable) throws ReviewNotFoundException;
+
+    /**
+     * Adds a list of reviews in bulk.
+     *
+     * @param reviews List of Review objects to be added in bulk.
+     * @return List of added Review objects.
+     * @throws SomethingWentWrongException If an unexpected issue occurs during bulk review addition.
+     */
+    List<Review> addReviewsInBulk(List<Review> reviews) throws SomethingWentWrongException;
 }

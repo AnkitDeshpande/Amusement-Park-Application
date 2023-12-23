@@ -3,6 +3,8 @@ package com.masai.service;
 import com.masai.exception.ParkNotFoundException;
 import com.masai.exception.SomethingWentWrongException;
 import com.masai.model.Park;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -57,4 +59,40 @@ public interface ParkService {
      * @throws SomethingWentWrongException If an unexpected issue occurs during the deletion.
      */
     String deletePark(Integer parkId) throws ParkNotFoundException, SomethingWentWrongException;
+
+    /**
+     * Retrieves a paginated list of all parks.
+     *
+     * @param pageable Pageable object containing pagination and sorting information.
+     * @return Page object containing a list of all available parks.
+     * @throws SomethingWentWrongException If an unexpected issue occurs while retrieving parks.
+     */
+    Page<Park> getAllParks(Pageable pageable) throws SomethingWentWrongException;
+
+    /**
+     * Retrieves a paginated and sorted list of all parks in ascending order.
+     *
+     * @param pageable Pageable object containing pagination and sorting information.
+     * @return Page object containing a list of all available parks sorted in ascending order.
+     * @throws SomethingWentWrongException If an unexpected issue occurs while retrieving parks.
+     */
+    Page<Park> getAllParksSortedAsc(Pageable pageable) throws SomethingWentWrongException;
+
+    /**
+     * Retrieves a paginated and sorted list of all parks in descending order.
+     *
+     * @param pageable Pageable object containing pagination and sorting information.
+     * @return Page object containing a list of all available parks sorted in descending order.
+     * @throws SomethingWentWrongException If an unexpected issue occurs while retrieving parks.
+     */
+    Page<Park> getAllParksSortedDesc(Pageable pageable) throws SomethingWentWrongException;
+
+    /**
+     * Adds a list of parks in bulk.
+     *
+     * @param parks List of Park objects to be added in bulk.
+     * @return List of added Park objects.
+     * @throws SomethingWentWrongException If an unexpected issue occurs during bulk park addition.
+     */
+    List<Park> addParksInBulk(List<Park> parks) throws SomethingWentWrongException;
 }

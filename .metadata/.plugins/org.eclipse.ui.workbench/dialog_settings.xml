@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="WorkbenchPreferenceDialog">
+		<item key="DIALOG_X_ORIGIN" value="651"/>
+		<item key="DIALOG_Y_ORIGIN" value="159"/>
+		<item key="DIALOG_WIDTH" value="650"/>
+		<item key="DIALOG_HEIGHT" value="729"/>
+		<item key="DIALOG_FONT_NAME" value="1|SF Pro Display|10.2|0|WINDOWS|1|-17|0|0|0|400|0|0|0|0|3|2|1|2|SF Pro Display"/>
+	</section>
+	<section name="PreferencesImportWizard">
+		<item key="" value="C:\Ankit\SB201\settings.epf"/>
+		<list key="WizardPreferencesExportPage1.STORE_DESTINATION_NAMES_ID">
+			<item value="C:\Ankit\SB201\settings.epf"/>
+		</list>
+	</section>
+	<section name="ImportExportAction">
+	</section>
+</section>

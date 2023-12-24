@@ -1,17 +1,17 @@
 package com.masai.service;
 
-import com.masai.exception.ParkNotFoundException;
-import com.masai.exception.SomethingWentWrongException;
-import com.masai.model.Park;
-import com.masai.repository.ActivityRepository;
-import com.masai.repository.ParkRepository;
-import com.masai.repository.ReviewRepository;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.masai.exception.ParkNotFoundException;
+import com.masai.exception.SomethingWentWrongException;
+import com.masai.model.Park;
+import com.masai.repository.ActivityRepository;
+import com.masai.repository.ParkRepository;
 
 @Service
 public class IParkService implements ParkService {
@@ -21,9 +21,6 @@ public class IParkService implements ParkService {
 
     @Autowired
     private ActivityRepository activityRepository;
-
-    @Autowired
-    private ReviewRepository reviewRepository;
 
     @Override
     public Park getPark(Integer parkId) throws ParkNotFoundException, SomethingWentWrongException {
@@ -81,7 +78,7 @@ public class IParkService implements ParkService {
             }
 
             // Save the updated park
-            Park updatedPark = repo.save(existingPark);
+            repo.save(existingPark);
 
             // Save the updated activity entities
             if (park.getActivities() != null) {

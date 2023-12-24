@@ -101,5 +101,5 @@ public interface AddressService {
      * @return List of added Address objects.
      * @throws SomethingWentWrongException If an unexpected issue occurs during bulk address addition.
      */
-    List<Address> addAddressesInBulk(List<Address> addresses) throws SomethingWentWrongException;
+    List<Address> addAddressesInBulk(Set<Address> addresses) throws SomethingWentWrongException;
 }

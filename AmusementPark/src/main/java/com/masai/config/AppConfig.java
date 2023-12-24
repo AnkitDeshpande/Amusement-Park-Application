@@ -10,18 +10,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class AppConfig {
 
-    /*
-     * @Bean
-     * public UserDetailsService userDetailsService() {
-     *    UserDetails user = User.builder().username("ankit").password(passwordEncoder().encode("abc")).roles("ADMIN").build();
-     *    return new InMemoryUserDetailsManager(user);
-     * }
-     */
+	/*
+	 * @Bean public UserDetailsService userDetailsService() { UserDetails user =
+	 * User.builder().username("ankit").password(passwordEncoder().encode("abc")).
+	 * roles("ADMIN").build(); return new InMemoryUserDetailsManager(user); }
+	 */
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
 }

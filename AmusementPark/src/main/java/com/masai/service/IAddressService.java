@@ -146,8 +146,8 @@ public class IAddressService implements AddressService {
      * @return List of added Address objects.
      * @throws SomethingWentWrongException If an unexpected issue occurs during bulk address addition.
      */
-    @Override
-    public List<Address> addAddressesInBulk(List<Address> addresses) throws SomethingWentWrongException {
-        return addressRepository.saveAll(addresses);
-    }
+	@Override
+	public List<Address> addAddressesInBulk(Set<Address> addresses) throws SomethingWentWrongException {
+		return addressRepository.saveAll(addresses);
+	}
 }

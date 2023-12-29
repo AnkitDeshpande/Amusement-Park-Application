@@ -16,24 +16,24 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Activity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-    @NotBlank(message = "Name is required.")
-    private String name;
+	@NotBlank(message = "Name is required.")
+	private String name;
 
-    @NotBlank(message = "Description is required.")
-    private String description;
+	@NotBlank(message = "Description is required.")
+	private String description;
 
-    @DecimalMin(value = "0.0", message = "Ticket price must be a non-negative value.")
-    private double price;
+	@DecimalMin(value = "0.0", message = "Ticket price must be a non-negative value.")
+	private double price;
 
-    private boolean isDeleted = false;
+	private boolean isDeleted = false;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "park_id")
-    private Park park;
+	@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name = "park_id")
+	private Park park;
 
 }

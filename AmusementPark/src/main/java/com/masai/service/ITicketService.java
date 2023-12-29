@@ -138,14 +138,18 @@ public class ITicketService implements TicketService {
      * Retrieves paginated tickets for a specific user.
      *
      * @param userId   ID of the user for whom tickets are requested.
-     * @param pageable Pageable object containing pagination and sorting information.
-     * @return Page object containing a set of tickets associated with the specified user.
-     * @throws TicketNotFoundException If no tickets are found for the specified user.
+     * @param pageable Pageable object containing pagination and sorting
+     *                 information.
+     * @return Page object containing a set of tickets associated with the specified
+     *         user.
+     * @throws TicketNotFoundException If no tickets are found for the specified
+     *                                 user.
      * @throws UserNotFoundException   If the specified user is not found.
      */
     @Override
-    public Page<Ticket> getTickets(Integer userId, Pageable pageable) throws TicketNotFoundException, UserNotFoundException {
-        User user = userRepository.findById(userId)
+    public Page<Ticket> getTickets(Integer userId, Pageable pageable)
+            throws TicketNotFoundException, UserNotFoundException {
+        userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User with ID " + userId + " not found"));
 
         Page<Ticket> tickets = ticketRepository.findTicketsByUser_UserId(userId, pageable);
@@ -157,17 +161,22 @@ public class ITicketService implements TicketService {
     }
 
     /**
-     * Retrieves paginated and sorted tickets for a specific user in ascending order.
+     * Retrieves paginated and sorted tickets for a specific user in ascending
+     * order.
      *
      * @param userId   ID of the user for whom tickets are requested.
-     * @param pageable Pageable object containing pagination and sorting information.
-     * @return Page object containing a set of tickets associated with the specified user sorted in ascending order.
-     * @throws TicketNotFoundException If no tickets are found for the specified user.
+     * @param pageable Pageable object containing pagination and sorting
+     *                 information.
+     * @return Page object containing a set of tickets associated with the specified
+     *         user sorted in ascending order.
+     * @throws TicketNotFoundException If no tickets are found for the specified
+     *                                 user.
      * @throws UserNotFoundException   If the specified user is not found.
      */
     @Override
-    public Page<Ticket> getTicketsSortedAsc(Integer userId, Pageable pageable) throws TicketNotFoundException, UserNotFoundException {
-        User user = userRepository.findById(userId)
+    public Page<Ticket> getTicketsSortedAsc(Integer userId, Pageable pageable)
+            throws TicketNotFoundException, UserNotFoundException {
+        userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User with ID " + userId + " not found"));
 
         Page<Ticket> tickets = ticketRepository.findTicketsByUser_UserIdOrderByPurchaseDateAsc(userId, pageable);
@@ -179,17 +188,22 @@ public class ITicketService implements TicketService {
     }
 
     /**
-     * Retrieves paginated and sorted tickets for a specific user in descending order.
+     * Retrieves paginated and sorted tickets for a specific user in descending
+     * order.
      *
      * @param userId   ID of the user for whom tickets are requested.
-     * @param pageable Pageable object containing pagination and sorting information.
-     * @return Page object containing a set of tickets associated with the specified user sorted in descending order.
-     * @throws TicketNotFoundException If no tickets are found for the specified user.
+     * @param pageable Pageable object containing pagination and sorting
+     *                 information.
+     * @return Page object containing a set of tickets associated with the specified
+     *         user sorted in descending order.
+     * @throws TicketNotFoundException If no tickets are found for the specified
+     *                                 user.
      * @throws UserNotFoundException   If the specified user is not found.
      */
     @Override
-    public Page<Ticket> getTicketsSortedDesc(Integer userId, Pageable pageable) throws TicketNotFoundException, UserNotFoundException {
-        User user = userRepository.findById(userId)
+    public Page<Ticket> getTicketsSortedDesc(Integer userId, Pageable pageable)
+            throws TicketNotFoundException, UserNotFoundException {
+        userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User with ID " + userId + " not found"));
 
         Page<Ticket> tickets = ticketRepository.findTicketsByUser_UserIdOrderByPurchaseDateDesc(userId, pageable);
@@ -205,11 +219,13 @@ public class ITicketService implements TicketService {
      *
      * @param tickets List of Ticket objects to be added in bulk.
      * @return List of added Ticket objects.
-     * @throws SomethingWentWrongException If an unexpected issue occurs during bulk ticket addition.
+     * @throws SomethingWentWrongException If an unexpected issue occurs during bulk
+     *                                     ticket addition.
      * @throws UserNotFoundException       If the specified user is not found.
      */
     @Override
-    public List<Ticket> addTicketsInBulk(List<Ticket> tickets) throws SomethingWentWrongException, UserNotFoundException {
+    public List<Ticket> addTicketsInBulk(List<Ticket> tickets)
+            throws SomethingWentWrongException, UserNotFoundException {
         return ticketRepository.saveAll(tickets);
     }
 }

@@ -72,8 +72,8 @@ public class IReviewService implements ReviewService {
 
     @Override
     public String deleteReview(Integer parkId, Integer userId, Integer reviewId) throws ReviewNotFoundException {
-        Park park = parkRepository.findById(parkId).orElseThrow(() -> new ParkNotFoundException("Park not found."));
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found."));
+        parkRepository.findById(parkId).orElseThrow(() -> new ParkNotFoundException("Park not found."));
+        userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found."));
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new ReviewNotFoundException("Review with id " + reviewId + " not found."));
         review.setDeleted(true);
@@ -86,9 +86,12 @@ public class IReviewService implements ReviewService {
      * Retrieves paginated reviews for a specific park.
      *
      * @param parkId   ID of the park for which reviews are requested.
-     * @param pageable Pageable object containing pagination and sorting information.
-     * @return Page object containing a set of reviews associated with the specified park.
-     * @throws ReviewNotFoundException If no reviews are found for the specified park.
+     * @param pageable Pageable object containing pagination and sorting
+     *                 information.
+     * @return Page object containing a set of reviews associated with the specified
+     *         park.
+     * @throws ReviewNotFoundException If no reviews are found for the specified
+     *                                 park.
      */
     @Override
     public Page<Review> getReview(Integer parkId, Pageable pageable) throws ReviewNotFoundException {
@@ -101,12 +104,16 @@ public class IReviewService implements ReviewService {
     }
 
     /**
-     * Retrieves paginated and sorted reviews for a specific park in ascending order.
+     * Retrieves paginated and sorted reviews for a specific park in ascending
+     * order.
      *
      * @param parkId   ID of the park for which reviews are requested.
-     * @param pageable Pageable object containing pagination and sorting information.
-     * @return Page object containing a set of reviews associated with the specified park sorted in ascending order.
-     * @throws ReviewNotFoundException If no reviews are found for the specified park.
+     * @param pageable Pageable object containing pagination and sorting
+     *                 information.
+     * @return Page object containing a set of reviews associated with the specified
+     *         park sorted in ascending order.
+     * @throws ReviewNotFoundException If no reviews are found for the specified
+     *                                 park.
      */
     @Override
     public Page<Review> getReviewSortedAsc(Integer parkId, Pageable pageable) throws ReviewNotFoundException {
@@ -119,12 +126,16 @@ public class IReviewService implements ReviewService {
     }
 
     /**
-     * Retrieves paginated and sorted reviews for a specific park in descending order.
+     * Retrieves paginated and sorted reviews for a specific park in descending
+     * order.
      *
      * @param parkId   ID of the park for which reviews are requested.
-     * @param pageable Pageable object containing pagination and sorting information.
-     * @return Page object containing a set of reviews associated with the specified park sorted in descending order.
-     * @throws ReviewNotFoundException If no reviews are found for the specified park.
+     * @param pageable Pageable object containing pagination and sorting
+     *                 information.
+     * @return Page object containing a set of reviews associated with the specified
+     *         park sorted in descending order.
+     * @throws ReviewNotFoundException If no reviews are found for the specified
+     *                                 park.
      */
     @Override
     public Page<Review> getReviewSortedDesc(Integer parkId, Pageable pageable) throws ReviewNotFoundException {
@@ -141,7 +152,8 @@ public class IReviewService implements ReviewService {
      *
      * @param reviews List of Review objects to be added in bulk.
      * @return List of added Review objects.
-     * @throws SomethingWentWrongException If an unexpected issue occurs during bulk review addition.
+     * @throws SomethingWentWrongException If an unexpected issue occurs during bulk
+     *                                     review addition.
      */
     @Override
     public List<Review> addReviewsInBulk(List<Review> reviews) throws SomethingWentWrongException {

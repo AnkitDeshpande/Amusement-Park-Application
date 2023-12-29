@@ -1,15 +1,21 @@
 package com.masai.config;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+
+import javax.crypto.SecretKey;
 
 @Component
 public class JwtHelper {
@@ -19,7 +25,7 @@ public class JwtHelper {
 
 	// public static final long JWT_TOKEN_VALIDITY = 60;
 	private String secret = "afafasfafafasfasfasfafacasdasfasxASFACASDFACASDFASFASFDAFASFASDAADSCSDFADCVSGCFVADXCcadwavfsfarvf";
-
+	SecretKey secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
 	// retrieve username from jwt token
 
 	public String getUsernameFromToken(String token) {
@@ -38,7 +44,15 @@ public class JwtHelper {
 
 	// for retrieveing any information from token we will need the secret key
 	private Claims getAllClaimsFromToken(String token) {
-		return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+
+		JwtParser parser = Jwts.parserBuilder()
+				.setSigningKey(secretKey) // Use SecretKey for verification
+				.build();
+
+		Claims claims = parser.parseClaimsJws(token)
+				.getBody();
+
+		return claims;
 	}
 
 	// check if the token has expired
@@ -62,9 +76,13 @@ public class JwtHelper {
 	 */
 	private String doGenerateToken(Map<String, Object> claims, String subject) {
 
-		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
-				.signWith(SignatureAlgorithm.HS512, secret).compact();
+		return Jwts.builder()
+				.setClaims(claims)
+				.setSubject(subject)
+				.setIssuedAt(new Date()) // Use Date.from(Instant.now()) for better time handling
+				.setExpiration(Date.from(Instant.now().plusMillis(JWT_TOKEN_VALIDITY * 1000)))
+				.signWith(secretKey) // Use SecretKey for signing
+				.compact();
 	}
 
 	// validate token

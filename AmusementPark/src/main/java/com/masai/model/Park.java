@@ -33,7 +33,7 @@ public class Park {
 
 	@NotBlank(message = "Name is required.")
 	private String name;
-	
+
 	@NotBlank(message = "Image URL is required.")
 	@Pattern(regexp = "^(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]*[-A-Za-z0-9+&@#/%=~_|]", message = "Invalid URL format.")
 	private String img;

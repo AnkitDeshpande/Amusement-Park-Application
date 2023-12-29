@@ -49,45 +49,34 @@ public class SecurityConfig {
 				.authorizeHttpRequests(auth -> auth
 						// .anyRequest().permitAll()
 						.requestMatchers("/swagger-ui/**", "/v3/**", "/swagger-resources/**", "/webjars/**",
-								"/auth/login", "/api/users/register", "/api/activities/{parkId}", "/api/parks/{parkId}",
-								"/api/reviews/park/{parkId}", "/api/parks")
+								"/auth/login", "/api/users/register", "/api/activities/**", "/api/reviews/park/**",
+								"/api/parks")
 						.permitAll() // Allowing access to specified endpoints without authentication
-						.requestMatchers(HttpMethod.PUT, "/api/users/{userId}",
-								"/api/reviews/park/{parkId}/user/{userId}/review/{reviewId}",
-								"/api/addresses/users/{userId}/update-addresses",
-								"/api/user/{userId}/tickets/{ticketId}")
-						.hasAnyRole("USER", "ADMIN") // Accessible to users only
-						.requestMatchers(HttpMethod.DELETE, "/api/users/{userId}",
-								"/api/reviews/park/{parkId}/user/{userId}/{reviewId}",
-								"/api/addresses/users/{userId}/delete-addresses/{addressId}",
-								"/api/user/{userId}/tickets/{ticketId}")
-						.hasAnyRole("USER", "ADMIN") // Accessible to users only
-						.requestMatchers(HttpMethod.GET, "/api/users/currentUser", "/api/addresses/users/{userId}",
-								"/api/user/{userId}/tickets", "/api/user/{userId}/tickets/{ticketId}")
-						.hasAnyRole("USER", "ADMIN") // Accessible to users only
-						.requestMatchers(HttpMethod.POST, "/api/reviews/park/{parkId}/user/{userId}",
-								"/api/addresses/users/{userId}", "/api/addresses/bulk/users/{userId}",
-								"/api/user/{userId}/tickets")
-						.hasAnyRole("USER", "ADMIN") // Accessible to users only
-						.requestMatchers(HttpMethod.GET, "/api/users/{userId}", "/api/users/all", "/api/parks/{parkId}")
-						.hasRole("ADMIN") // Accessible to admins only via GET
-						.requestMatchers(HttpMethod.PUT, "/api/parks/{parkId}", "/api/activities").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.DELETE, "/api/parks/{parkId}",
-								"/api/activities/park/{parkId}/activity/{activityId}")
-						.hasAnyRole("ADMIN") // Accessible to admins only via DELETE
-						.requestMatchers(HttpMethod.POST, "/api/parks", "/api/activities/park/{parkId}",
-								"/api/activities/bulk/park/{parkId}")
-						.hasRole("ADMIN") // Accessible to admins only via POST
+						.requestMatchers(HttpMethod.PUT, "/api/users/**", "/api/reviews/park/**",
+								"/api/addresses/users/**")
+						.hasAnyAuthority("USER") // Accessible to users only
+						.requestMatchers(HttpMethod.DELETE, "/api/reviews/park/**", "/api/addresses/users/**",
+								"/api/user/**")
+						.hasAnyAuthority("USER") // Accessible to users only
+						.requestMatchers(HttpMethod.GET, "/api/users/currentUser", "/api/addresses/users/**",
+								"/api/user/**", "/api/reviews/**")
+						.hasAnyAuthority("USER") // Accessible to users only
+						.requestMatchers(HttpMethod.POST, "/api/reviews/park/**", "/api/addresses/users/**",
+								"/api/addresses/bulk/users/**", "/api/user/**")
+						.hasAnyAuthority("USER") // Accessible to users only
+						.requestMatchers(HttpMethod.PUT, "/api/parks/**", "/api/activities").hasAuthority("ADMIN")
+						.requestMatchers(HttpMethod.DELETE, "/api/parks/**", "/api/activities/park/**")
+						.hasAuthority("ADMIN") // Accessible to admins only via DELETE
+						.requestMatchers(HttpMethod.POST, "/api/parks/**", "/api/activities/park/**",
+								"/api/activities/bulk/park/**")
+						.hasAuthority("ADMIN") // Accessible to admins only via POST
 						.anyRequest().authenticated() // All other requests need authentication
 
 				).exceptionHandling(ex -> ex.authenticationEntryPoint(point)) // Handling authentication exceptions with
 																				// specified entry point
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-		// Setting session creation policy to STATELESS
-
-		http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
-		// Adding JwtAuthenticationFilter before UsernamePasswordAuthenticationFilter in
-		// the filter chain
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.authenticationProvider(doDaoAuthenticationProvider())
+				.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build(); // Building and returning the SecurityFilterChain
 	}

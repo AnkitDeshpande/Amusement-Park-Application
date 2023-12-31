@@ -57,6 +57,7 @@ public class IUserService implements UserService, UserDetailsService {
 
 			return savedUser;
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new SomethingWentWrongException();
 		}
 	}

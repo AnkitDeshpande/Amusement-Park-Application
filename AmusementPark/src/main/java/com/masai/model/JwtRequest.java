@@ -12,6 +12,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class JwtRequest {
-    private String username;
-    private String password;
+	private String username;
+	private String password;
+
 }
